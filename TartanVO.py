@@ -105,6 +105,6 @@ class TartanVO(object):
         else:
             print('    scale is not given, using 1 as the default scale value..')
 
-        print("{} Pose inference using {}s: \n{}".format(self.test_count, inferencetime, posenp))
+        # print("{} Pose inference using {}s: \n{}".format(self.test_count, inferencetime, posenp))
         return posenp, flownp
 

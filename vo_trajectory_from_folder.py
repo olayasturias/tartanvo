@@ -8,6 +8,7 @@ from TartanVO import TartanVO
 import argparse
 import numpy as np
 import cv2
+import os
 from os import mkdir
 from os.path import isdir
 from Datasets.utils import load_kiiti_intrinsics
@@ -37,6 +38,9 @@ def get_args():
                         help='test trajectory gt pose file, used for scale calculation, and visualization (default: "")')
     parser.add_argument('--save-flow', action='store_true', default=False,
                         help='save optical flow (default: False)')
+    parser.add_argument('--track', type=str, default=False,
+                        help='track')
+
 
     args = parser.parse_args()
 
@@ -101,10 +105,13 @@ if __name__ == '__main__':
         if datastr=='euroc':
             print("==> ATE: %.4f" %(results['ate_score']))
         else:
-            print("==> ATE: %.4f,\t KITTI-R/t: %.4f, %.4f" %(results['ate_score'], results['kitti_score'][0], results['kitti_score'][1]))
+            print("==> ATE: %.4f, RPE rot: %.4f, RPE trans: %.4f, \t KITTI-R/t: %.4f, %.4f" %(results['ate_score'], results['rpe_score'][0], results['rpe_score'][1] ,results['kitti_score'][0], results['kitti_score'][1]))
+        
 
+        with open(os.path.join('results',datastr,args.track,testname+'_eval.txt'), "w") as text_file:
+            print(f"==> ATE:{results['ate_score']}, RPE rot: {results['rpe_score'][0]}, RPE trans: {results['rpe_score'][1]}, \t KITTI-R/t: {results['kitti_score'][0]}, {results['kitti_score'][1]} ", file=text_file)
         # save results and visualization
-        plot_traj(results['gt_aligned'], results['est_aligned'], vis=False, savefigname='results/'+testname+'.png', title='ATE %.4f' %(results['ate_score']))
-        np.savetxt('results/'+testname+'.txt',results['est_aligned'])
+        plot_traj(results['gt_aligned'], results['est_aligned'], vis=False, savefigname=os.path.join('results',datastr,args.track,testname+'.png'), title='ATE %.4f' %(results['ate_score']))
+        np.savetxt(os.path.join('results',datastr,args.track,testname+'.txt'),results['est_aligned'])
     else:
-        np.savetxt('results/'+testname+'.txt',poselist)
+        np.savetxt(os.path.join('results',datastr,args.track,testname+'.txt'),poselist)
