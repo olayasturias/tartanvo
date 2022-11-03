@@ -107,6 +107,7 @@ if __name__ == '__main__':
         else:
             print("==> ATE: %.4f, RPE rot: %.4f, RPE trans: %.4f, \t KITTI-R/t: %.4f, %.4f" %(results['ate_score'], results['rpe_score'][0], results['rpe_score'][1] ,results['kitti_score'][0], results['kitti_score'][1]))
         
+        print('results',datastr,args.track,testname+'_eval.txt')
 
         with open(os.path.join('results',datastr,args.track,testname+'_eval.txt'), "w") as text_file:
             print(f"==> ATE:{results['ate_score']}, RPE rot: {results['rpe_score'][0]}, RPE trans: {results['rpe_score'][1]}, \t KITTI-R/t: {results['kitti_score'][0]}, {results['kitti_score'][1]} ", file=text_file)
