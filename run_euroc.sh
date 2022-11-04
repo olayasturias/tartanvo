@@ -7,4 +7,5 @@ do
                                         --batch-size 1 --worker-num 1 \
                                         --test-dir data/$track/image_left \
                                         --pose-file data/$track/pose_left.txt
+                                        
 done
